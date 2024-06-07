@@ -3,11 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Poll } from './pol.entity';
-import { ProductsController } from './products/products.controller';
 import { CustomersController } from './customers/customers.controller';
 import { UsersController } from './controllers/users/users.controller';
 
-import { ProductsService } from './products/products.service';
+import { ProductsModule } from './products/products.module';
+import { TagsModule } from './tags/tags.module';
 
 @Module({
   imports: [
@@ -21,9 +21,11 @@ import { ProductsService } from './products/products.service';
       entities: [Poll],
       synchronize: true,
     }),
+    ProductsModule,
+    TagsModule,
 
   ],
-  controllers: [AppController, ProductsController, CustomersController, UsersController],
-  providers: [AppService, ProductsService],
+  controllers: [AppController, CustomersController, UsersController],
+  providers: [AppService],
 })
 export class AppModule {}

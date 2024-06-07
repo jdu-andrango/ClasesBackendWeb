@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, NotFoundException, Param, ParseIntPipe, Patch, Post, Put, Res } from '@nestjs/common';
 import { create } from 'domain';
 import { response } from 'express';
 import { ProductsService } from './products.service';
@@ -133,41 +133,84 @@ export class ProductsController {
 
     // * peticiones  nuevas 
 
-    @Get(':id')
-    find(@Param('id') id: number) {
-      return this.productsService.getId(id);
+ //   @Get(':id')
+ //   find(@Param('id') id: number) {
+ //     return this.productsService.getId(id);
+ //   }
+
+ @Get(':id')
+  async find(@Param('id', ParseIntPipe) id: number) {
+    try {
+      const product = this.productsService.getId(id);
+      return { message: 'Producto encontrado', product };
+    } catch (error) {
+      throw new HttpException(`freed tienes razon`,error.message, error.status);
     }
+  }
+
+  @Post()
+  async create(@Body() body) {
+    try {
+      this.productsService.create(body);
+      return { message: 'Producto creado satisfactoriamente' };
+    } catch (error) {
+      throw new HttpException(`producto creado`,error.message, error.status);
+    }
+  }
+
+  @Put(':id')
+  async update(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })) id: number, 
+    @Body() body,
+  ) {
+    try {
+      this.productsService.update(id, body);
+      return { message: 'Producto actualizado satisfactoriamente' };
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @Delete(':id')
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    try {
+      this.productsService.remove(id);
+      return { message: 'Producto eliminado satisfactoriamente' };
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+ //   @Post()
+ //   @HttpCode(HttpStatus.NO_CONTENT)
+ //   createProduct(
+ //     @Body() body,
+ //   ) {
+ //     this.productsService.insert(body);
+ //   }
   
-    @Post()
-    @HttpCode(HttpStatus.NO_CONTENT)
-    createProduct(
-      @Body() body,
-    ) {
-      this.productsService.insert(body);
-    }
-  
-    @Put(':id')
-    update(
-      @Param('id') id: number, 
-      @Body() body,
-    ) {
-      return this.productsService.update(id, body);
-    }
+ //   @Put(':id')
+ //   update(
+ //     @Param('id') id: number, 
+ //     @Body() body,
+ //   ) {
+ //     return this.productsService.update(id, body);
+ //   }
     
    
-    @Delete(':id')
-@HttpCode(202)
-deleteRegreso(@Param('id') id: number) {
-  const remainingProductsBefore = this.productsService.getAll();
-  this.productsService.delete(id);
-  const remainingProductsAfter = this.productsService.getAll();
-  
-  if (remainingProductsBefore.length > remainingProductsAfter.length) {
-    return { message: '¡Producto eliminado con éxito!', remainingProducts: remainingProductsAfter };
-  } else {
-    return { message: '¡No hay un producto con ese ID para borrar!', remainingProducts: remainingProductsAfter };
-  }
-}
+//    @Delete(':id')
+//@HttpCode(202)
+//deleteRegreso(@Param('id') id: number) {
+//  const remainingProductsBefore = this.productsService.getAll();
+//  this.productsService.delete(id);
+//  const remainingProductsAfter = this.productsService.getAll();
+//  
+//  if (remainingProductsBefore.length > remainingProductsAfter.length) {
+//    return { message: '¡Producto eliminado con éxito!', remainingProducts: remainingProductsAfter };
+//  } else {
+//    return { message: '¡No hay un producto con ese ID para borrar!', remainingProducts: remainingProductsAfter };
+//  }
+//}
     
   
     //@Delete(':id')
@@ -176,6 +219,5 @@ deleteRegreso(@Param('id') id: number) {
     //  this.productsService.delete(id);
     //}
 
-   
-
+    
 }
