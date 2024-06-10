@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Res } from '@nestjs/common';
-import { create } from 'domain';
-import { response } from 'express';
+/* eslint-disable prettier/prettier */
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param,  Post,  } from '@nestjs/common';
+// import { create } from 'domain';
+// import { response } from 'express';
 import { ProductsService } from './products.service';
 import { Product } from './interface/products.interface';
 
@@ -146,13 +147,13 @@ export class ProductsController {
       this.productsService.insert(body);
     }
   
-    @Put(':id')
-    update(
-      @Param('id') id: number, 
-      @Body() body,
-    ) {
-      return this.productsService.update(id, body);
-    }
+    // @Put(':id')
+    // update(
+    //   @Param('id') id: number, 
+    //   @Body() body,
+    // ) {
+    //   return this.productsService.update(id, body);
+    // }
     
    
     @Delete(':id')

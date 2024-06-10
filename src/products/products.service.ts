@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { Product } from './interface/products.interface';
 
@@ -57,17 +58,17 @@ export class ProductsService {
         console.log(this.products)
       }
     
-      update(id: number, body: any) {
-        let product: Product = {
-          id,
-          name: body.name,
-          description: body.description,
-        }
-        this.products = this.products.map( (item: Product) => {
-          console.log(body.name, item.name == body.name ,item.name);
-          return item.id == id ? product : item;
-        });
-      }
+      // update(id: number, body: any) {
+      //   let product: Product = {
+      //     id,
+      //     name: body.name,
+      //     description: body.description,
+      //   }
+      //   this.products = this.products.map( (item: Product) => {
+      //     console.log(body.name, item.name == body.name ,item.name);
+      //     return item.id == id ? product : item;
+      //   });
+      // }
 
 
      
