@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param,  Post,  } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
 // import { create } from 'domain';
 // import { response } from 'express';
 import { ProductsService } from './products.service';
@@ -147,13 +147,13 @@ export class ProductsController {
       this.productsService.insert(body);
     }
   
-    // @Put(':id')
-    // update(
-    //   @Param('id') id: number, 
-    //   @Body() body,
-    // ) {
-    //   return this.productsService.update(id, body);
-    // }
+    @Put(':id')
+    update(
+      @Param('id') id: number, 
+      @Body() body,
+    ) {
+      return this.productsService.update(id, body);
+    }
     
    
     @Delete(':id')
@@ -177,6 +177,5 @@ deleteRegreso(@Param('id') id: number) {
     //  this.productsService.delete(id);
     //}
 
-   
-
+    
 }
